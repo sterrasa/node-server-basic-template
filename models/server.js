@@ -6,8 +6,9 @@ class Server {
 
     constructor() {
         this.app = express();
-        this.port = process.env.PORT;
+        this.port = process.env.PORT || 3000;
         this.usersPath = '/api/users';
+        this.authPath = '/api/auth'
         //connect db
         this.connectDb();
         // Middlewares
@@ -22,19 +23,16 @@ class Server {
     }
 
     middlewares() {
-
         // CORS
         this.app.use(cors());
-
         // read and parse json
         this.app.use(express.json());
-
         // public dir
         this.app.use(express.static('public'));
-
     }
 
     routes() {
+        this.app.use(this.authPath, require('../routes/auth.routes'));
         this.app.use(this.usersPath, require('../routes/users.routes'));
     }
 
