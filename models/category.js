@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const CategorySchema = Schema({
+const CategorySchema = new Schema({
 
     name: {
         type: String,
@@ -19,5 +19,9 @@ const CategorySchema = Schema({
     }
 });
 
+CategorySchema.methods.toJSON = function() {
+    const { __v, status, ...category  } = this.toObject();
+    return category;
+}
 
-module.export = model('Category', CategorySchema);
+module.exports = model('Category', CategorySchema);
